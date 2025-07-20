@@ -1,0 +1,217 @@
+<!-- By Lakshyraj Parihar -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Game</title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: orange;
+    }
+    .wrapper{
+        background-color: white;
+        padding: 35px;
+        border-radius: 10px;
+        box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+    }
+    .content-box{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        margin-top: 15px;
+        border: 1px solid;
+        padding: 20px;
+        border-radius: 13px;
+    }
+    .final-result{
+        margin-top: 10px;
+        padding: 20px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid rgb(168, 167, 167);
+    }
+    ul li{
+        list-style: none;
+        display: flex;
+    }
+    .btn{
+        padding: 10px 28px;
+        font-size: medium;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        background-color: rgb(246, 172, 35);
+        transition: transform 0.2s ease;
+        
+    }
+    .btn:active{
+        transform: scale(0.97);
+    }
+
+    .content p span{
+        position: relative;
+    }
+    .content p span.active{
+        color: orange;
+    }
+    .content p span.correct{
+     color: green;
+    }
+    .content p span.incorrect{
+        color: red;
+        outline: 1px solid #fff;
+        background-color: rgba(202, 70, 70, 0.313);
+        border-radius: 3px;
+    }
+    ::selection{
+        color: #fff;
+        background-color: orange;
+    }
+    .wrapper .input{
+        padding: 13px 20px 0px;
+        position: absolute;
+        opacity: 0;
+        z-index: -99;
+    }
+</style>
+</head>
+<body>
+    <div class="wrapper">
+        <div><h1>Typing Tester By Lakshyraj Parihar</h1></div>
+        <input type="text" class="input">
+        <div class="content-box">
+            <div class="content">
+                    <p></p></div>
+                <ul class="final-result">
+                    <li class="time">
+                        <p>time:</p>
+                        <span><b>60</b>s</span>
+                    </li>
+                    <li class="mistakes">
+                        <p>mistakes:</p>
+                        <span><b>0</b></span>
+                    </li>
+                    <li class="WPM">
+                        <p>WPM:</p>
+                        <span><b>0</b></span>
+                    </li>
+                        <li class="CPM">
+                            <p>CPM:</p>
+                            <span><b>0</b></span>
+                    </li>
+                    <Button class="btn">Try Again</Button>
+                </ul>
+                
+        </div>
+    </div>
+    <script>
+        const content = document.querySelector('.content p') 
+        const TextInput = document.querySelector('.wrapper .text-input') 
+        const time = document.querySelector('.time span b') 
+        const mistakes = document.querySelector('.mistakes span b') 
+        const WPM = document.querySelector('.WPM span b') 
+        const CPM = document.querySelector('.CPM span b') 
+        const btn = document.querySelector('Button') 
+        const input = document.querySelector('input')
+
+        // set values 
+        let timer;
+        let maxtime = 60;
+        let timeleft = maxtime;
+        let mistake = 0;
+        let isTyping = false;  
+        let charindex = 0;
+        
+        function loadparagraph(){
+        const paragraph = [" Avoid daydreaming about the years to come.",
+        "You are the most important person in your whole life.",
+        "Always be true to who you are, and ignore what other people have to say about you.",
+        "Always be true to who you are, and ignore what other people have to say about you.",
+        "Only demonstrate your strength when it’s really required.","Subscribe to Drop X Out"];
+
+        const randomindex = Math.floor(Math.random()*paragraph.length);
+        content.innerHTML = '';
+        for( const char of paragraph[randomindex]){
+            console.log(char);
+          content.innerHTML+= `<span>${char}</span>`;
+        }
+        content.querySelectorAll('span')[0].
+        classList.add('active');
+        document.addEventListener('keydown',()=>input.focus())
+        content.addEventListener('click',()=>input.focus())
+ 
+        }
+
+
+        function initTyping(){
+            let char = content.querySelectorAll('span')
+            let typedchar = input.value.charAt(charindex);
+
+            if(!isTyping){
+                timer = setInterval(initTime,1000)
+                isTyping = true;
+            }
+
+            if(charindex<char.length && timeleft>0){
+                if(typedchar === char[charindex].innerText){
+                    char[charindex].classList.add('correct');
+                    console.log('correct');
+                    
+                }
+                else{
+                    mistake++
+                    mistakes.innerText = mistake;
+                    char[charindex].classList.add('incorrect');
+                    console.log('incorrect');
+                    
+                }charindex++
+                char[charindex].classList.add('active');
+                CPM.innerText = charindex - mistake;
+            }
+            else{
+                clearInterval(timer);
+                input.value='';
+
+            }
+
+        }
+        function initTime(){
+            if(timeleft>0){
+            timeleft--;
+            time.innerText = timeleft;
+            const wpmval = Math.round(((charindex-mistake)/5) /(maxtime-timeleft)*60);
+            WPM.innerText = wpmval;
+        }else{
+            clearInterval(timer);
+            }
+        }
+
+        function reset(){
+            loadparagraph();
+            clearInterval(timer);
+            input.value = '';
+            charindex = 0;
+            timeleft = maxtime;
+            time.innerText = timeleft;
+            WPM.innerText = 0;
+            CPM.innerText = 0;
+            mistake = 0;
+            mistakes.innerText = 0;
+            isTyping = false;
+        }
+        input.addEventListener('input',initTyping)
+        btn.addEventListener('click',reset)
+        loadparagraph();
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!-- guesing game -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Document</title>
+   <style>
+    body{
+        background-color: rgba(223, 113, 45, 0.953);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container{
+    font-family:Arial, Helvetica, sans-serif ;
+    background-color: white;
+    border-radius: 40px;
+    border: 20px solid orange;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+
+}
+.tag{
+    padding: 20px 20px 2px 20px;
+    border: 2px solid orange;
+}
+#main{
+    border: 2px solid orange;
+    text-align: center;
+    padding-top: 40px;
+    font-size: large;
+}
+input[type='text']{
+    font-size: large;
+    padding: 10px;
+    border-radius: 4px;
+    border: 3px solid rgb(221, 131, 48);
+}
+
+#btn {
+  align-items: center;
+  background-clip: padding-box;
+  background-color: #fa6400;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.button-5:hover,
+.button-5:focus {
+  background-color: #fb8332;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.button-5:hover {
+  transform: translateY(-1px);
+}
+
+.button-5:active {
+  background-color: #c85000;
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
+}
+
+
+   </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tag"><h1>Enter A Number Between 1 to 100</h1></div>
+    <div id="main">
+        <input type="text" id="input">
+        <button id="btn">Guess</button>
+        <p id="wrng"></p>
+        <p id="guesses">No Of Guess: 0</p>
+    </div>
+    </div>
+    <script>
+        let input= document.getElementById('input')
+        let btn= document.getElementById('btn')
+        let wrng= document.getElementById('wrng')
+        let guesses= document.getElementById('guesses')
+        
+        let answer = Math.floor(Math.random()*100)+1
+        console.log(answer);
+        guessnumber = 0;
+        btn.addEventListener('click',()=>{
+            guessno();
+        })
+
+        function guessno(){
+
+            if(input.value<1 || input.value>100 || isNaN(input.value)){
+                wrng.innerHTML= 'Enter a No Between 1 to 100'
+                input.value=''
+            }else{
+                guessnumber++;
+                guesses.innerHTML = `No Of Guess: ${guessnumber}`
+                if(input.value<answer){
+                    wrng.innerHTML= 'guessing Too Low'
+                    input.value=''
+                }else if(input.value>answer){
+                    wrng.innerHTML= 'Guessing Too High'
+                    input.value=''
+                }
+                else{
+                    wrng.innerHTML= 'congratulation You Won'
+                    setTimeout(()=>{
+                        resset();
+                    },5000)
+                }
+            }
+        }
+        function resset(){
+            input.value='';
+            answer = Math.floor(Math.random()*100)+1;
+            guesses.innerHTML = `No Of Guess: ${0}`;
+            guessnumber=0;
+            guessno();
+            
+        }
+    </script>
+</body>
+</html>

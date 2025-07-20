@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>counter</title>
+ <style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: rgb(235, 223, 223);
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .counter-container{
+      text-align: center;
+      margin-top: 200px;
+    }
+    #counter-timer{
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: rgb(101, 67, 67);
+    }
+    #counter-label{
+        font-size: 26px;
+        color: rgb(129, 82, 82);
+    }
+ </style>
+</head>
+<body>
+    <div class="counter-container">
+        <div id="counter-timer"></div>
+        <div id="counter-label">until 2026</div>
+    </div>
+    <script>
+       
+    
+        let targetdate = new Date('2026-01-01T00:00:00');
+
+        
+        
+        function updatecounter(){
+            let currentdate= new Date();
+
+        let timediffrence = targetdate-currentdate;
+            
+
+        const day = Math.floor((timediffrence/ (1000*60*60*24)));
+        const  hour = Math.floor((timediffrence % (1000*60*60*24))/(1000*60*60));
+        const minute = Math.floor((timediffrence % (1000*60*60))/(1000*60));
+        const second = Math.floor((timediffrence % (1000*60))/1000);
+        let timer = document.getElementById('counter-timer')
+        timer.innerHTML= `${day}d ${hour}hr ${minute}m ${second}s`
+        }
+        updatecounter();
+        setInterval(updatecounter,1000);
+    </script>
+</body>
+</html>
